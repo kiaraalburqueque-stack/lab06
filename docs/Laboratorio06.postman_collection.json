@@ -1,0 +1,329 @@
+{
+  "info": {
+    "name": "Laboratorio 06 - AOP y roles",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "productoId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "01 USER crea producto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Ana"
+          },
+          {
+            "key": "Rol",
+            "value": "USER"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"disco duro\", \"precio\": 2500, \"stock\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 201\", () => pm.response.to.have.status(201));",
+              "if (pm.response.code === 201) pm.collectionVariables.set(\"productoId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 USER lista",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Luis"
+          },
+          {
+            "key": "Rol",
+            "value": "USER"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 ADMIN actualiza",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Ricardo"
+          },
+          {
+            "key": "Rol",
+            "value": "ADMIN"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos/{{productoId}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"disco duro\", \"precio\": 2200, \"stock\": 10}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 USER no puede eliminar",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Ana"
+          },
+          {
+            "key": "Rol",
+            "value": "USER"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos/{{productoId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 403\", () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 ADMIN elimina",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Ricardo"
+          },
+          {
+            "key": "Rol",
+            "value": "ADMIN"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos/{{productoId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 204\", () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Producto eliminado",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Ricardo"
+          },
+          {
+            "key": "Rol",
+            "value": "ADMIN"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos/{{productoId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 404\", () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 Sin cabeceras",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 401\", () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 Rol incorrecto",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Ana"
+          },
+          {
+            "key": "Rol",
+            "value": "ADMIN"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 403\", () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 Datos inválidos",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Ricardo"
+          },
+          {
+            "key": "Rol",
+            "value": "ADMIN"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/productos",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"\", \"precio\": -1, \"stock\": -1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 400\", () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 ADMIN consulta auditoría",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Usuario",
+            "value": "Ricardo"
+          },
+          {
+            "key": "Rol",
+            "value": "ADMIN"
+          }
+        ],
+        "url": "{{baseUrl}}/api/auditoria"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Estado 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
