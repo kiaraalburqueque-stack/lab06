@@ -53,3 +53,9 @@ Estos apuntes se basan en esta implementación; revisarlos y adaptarlos a la exp
 ## Prueba del JAR por HTTP
 
 El puerto 8080 estaba ocupado por otro proceso. Se inicio el JAR en 8086 y se verificaron POST 201, GET 200, PUT 200 y DELETE 204 con peticiones HTTP reales, ademas de los cuatro eventos en /api/auditoria. El producto de prueba fue eliminado; sus eventos se conservan en la base local excluida de Git. El servidor queda ejecutandose en http://localhost:8086.
+
+## Frontend integrado
+
+Se agrego una interfaz responsive en la raiz del servidor: formulario de productos, busqueda, contadores, edicion, eliminacion con confirmacion y consulta de auditoria. El selector de usuario envia las cabeceras y adapta las acciones disponibles. Los nombres y eventos se renderizan con textContent para evitar interpretar HTML recibido.
+
+Verificacion: sintaxis JavaScript con node --check; las tres pruebas de integracion siguen pasando; JAR compilado; GET /, /app.js y /styles.css devuelven 200, y los endpoints protegidos siguen devolviendo JSON al enviar las cabeceras. No se realizo una prueba automatizada en navegador; revisar visualmente en http://localhost:8086/.

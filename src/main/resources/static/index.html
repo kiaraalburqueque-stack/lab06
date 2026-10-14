@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab 06 · Inventario</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/">L<span>06</span></a>
+    <p class="eyebrow">LABORATORIO 06</p>
+    <h2>Control de<br>inventario.</h2>
+    <p class="muted">Productos, permisos y un registro de cada operación.</p>
+    <nav aria-label="Secciones">
+      <button class="nav active" id="products-tab" aria-pressed="true">01 <span>Productos</span></button>
+      <button class="nav" id="audit-tab" aria-pressed="false">02 <span>Auditoría</span></button>
+    </nav>
+    <div class="sidebar-note"><span class="dot"></span> API REST + Spring AOP</div>
+  </aside>
+  <main>
+    <header>
+      <div><p class="eyebrow">DESARROLLO WEB / TECSUP</p><h1 id="page-title">Productos</h1></div>
+      <label class="identity">Usuario de práctica
+        <select id="identity"><option value="Ricardo">Ricardo · ADMIN</option><option value="Ana">Ana · USER</option><option value="Luis">Luis · USER</option></select>
+      </label>
+    </header>
+    <p class="notice">Demo del laboratorio: el selector envía Usuario y Rol. No representa un inicio de sesión con contraseña.</p>
+    <p id="message" role="status" aria-live="polite" hidden></p>
+    <section id="products-panel" aria-labelledby="products-heading">
+      <div class="stats">
+        <article><p>Productos registrados</p><strong id="product-count">—</strong></article>
+        <article><p>Unidades en inventario</p><strong id="stock-count">—</strong></article>
+        <article><p>Permisos actuales</p><strong class="permissions" id="permissions">CRUD completo</strong></article>
+      </div>
+      <div class="workspace">
+        <section class="card list-card">
+          <div class="card-heading"><div><p class="eyebrow">INVENTARIO</p><h2 id="products-heading">Tus productos</h2></div><button id="refresh" class="secondary">Actualizar lista</button></div>
+          <label class="search">Buscar por nombre<input id="search" type="search" placeholder="Ej. disco duro"></label>
+          <div class="table-wrap"><table><thead><tr><th>ID</th><th>Producto</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead><tbody id="products-body"></tbody></table></div>
+          <p class="empty" id="products-empty" hidden>Aún no hay productos. Crea el primero con el formulario.</p>
+        </section>
+        <section class="card form-card">
+          <p class="eyebrow">GESTIONAR</p><h2 id="form-title">Nuevo producto</h2>
+          <form id="product-form">
+            <label>Nombre<input id="name" required maxlength="100" placeholder="Nombre del producto"></label>
+            <label>Precio (S/)<input id="price" type="number" min="0.01" max="9999999999.99" step="0.01" required placeholder="0.00"></label>
+            <label>Stock<input id="stock" type="number" min="0" max="2147483647" step="1" required placeholder="0"></label>
+            <button id="save" class="primary" type="submit">Crear producto</button>
+            <button id="cancel" class="secondary" type="button" hidden>Cancelar edición</button>
+          </form>
+          <p class="form-note">Cada cambio queda registrado con su fecha y usuario.</p>
+        </section>
+      </div>
+    </section>
+    <section id="audit-panel" hidden aria-labelledby="audit-heading">
+      <div class="card">
+        <div class="card-heading"><div><p class="eyebrow">TRAZABILIDAD</p><h2 id="audit-heading">Registro de operaciones</h2></div><button id="refresh-audit" class="secondary">Actualizar registro</button></div>
+        <p class="muted">Eventos del servicio, del más reciente al más antiguo. Solo ADMIN puede consultar este registro.</p>
+        <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Acción</th><th>Usuario</th><th>Método</th><th>Detalle</th></tr></thead><tbody id="audit-body"></tbody></table></div>
+        <p class="empty" id="audit-empty" hidden>No hay eventos registrados.</p>
+      </div>
+    </section>
+    <footer>Lab 06 <span>Auditoría y control de acceso con AOP</span></footer>
+  </main>
+</body>
+</html>

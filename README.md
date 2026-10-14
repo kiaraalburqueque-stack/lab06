@@ -86,8 +86,19 @@ git remote add origin https://github.com/kiaraalburqueque-stack/lab06.git
 git push -u origin main
 ```
 
-No se requiere frontend para cumplir las guías; la API se demuestra con Postman. Repositorio: https://github.com/kiaraalburqueque-stack/lab06.
+Repositorio: https://github.com/kiaraalburqueque-stack/lab06.
 
 ## Puerto usado en esta sesion
 
-Como 8080 ya estaba ocupado, se dejo el servidor del laboratorio en http://localhost:8086/api/productos. En Postman cambiar baseUrl a http://localhost:8086. Para repetir este arranque: `java -jar target/laboratorio06-1.0.0.jar --server.port=8086`. Para detener el proceso actual en PowerShell: `Stop-Process -Id 2224`, tras comprobar que corresponde a este JAR.
+Como 8080 ya estaba ocupado, se dejo el servidor del laboratorio en http://localhost:8086/api/productos. En Postman cambiar baseUrl a http://localhost:8086. Para repetir este arranque: `java -jar target/laboratorio06-1.0.0.jar --server.port=8086`. Para detener el proceso actual en PowerShell: `Stop-Process -Id 43300`, tras comprobar que corresponde a este JAR.
+
+## Interfaz web
+
+Abre http://localhost:8086/ si ejecutas el servidor en 8086, o http://localhost:8080/ con el puerto predeterminado. Spring Boot sirve el frontend incluido en `src/main/resources/static/`; no necesita Node ni un servidor separado.
+
+- Selecciona Ricardo (ADMIN), Ana (USER) o Luis (USER). La interfaz envía las cabeceras Usuario y Rol automáticamente.
+- Crea productos, busca por nombre y revisa el número de productos y unidades de stock.
+- Ricardo puede editar, eliminar con confirmación y consultar la auditoría. Ana y Luis pueden crear y listar.
+- Los permisos también se validan en el backend. El selector es una demostración académica, no autenticación por contraseña.
+
+La pantalla muestra estados vacíos, errores de la API y confirmación de las operaciones. Cada actualización del listado genera el evento LISTAR previsto por el laboratorio.
